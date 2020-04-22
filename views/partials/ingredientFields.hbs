@@ -1,0 +1,11 @@
+<div class="form-group ingredient-section">
+  <div>
+    <label>Name</label>
+    <input type="text" name="recipe[ingredients][{{index}}][name]">
+    <button type="button" class="removeIngredient">Delete</button>
+  </div>
+  <div>
+    <label>Qty.</label>
+    <input type="number" name="recipe[ingredients][{{index}}][quantity]">
+  </div>
+</div>

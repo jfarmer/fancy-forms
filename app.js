@@ -4,8 +4,25 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+let hbs = require('hbs');
+
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+
+hbs.registerPartials(path.join(__dirname, 'views', 'partials'), function(err) {
+  if (err) {
+    throw err;
+  }
+});
+
+hbs.registerHelper('times', function(num, options) {
+  let results = '';
+
+  for (let i = 0; i < num; i++) {
+    results += options.fn(i);
+  }
+
+  return results;
+});
 
 var app = express();
 
@@ -15,12 +32,12 @@ app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

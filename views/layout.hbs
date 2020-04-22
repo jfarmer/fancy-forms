@@ -2,7 +2,51 @@
 <html>
   <head>
     <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script
+      src="https://code.jquery.com/jquery-3.5.0.min.js"
+      integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+      crossorigin="anonymous"></script>
+
+    <link rel='stylesheet' href='/stylesheets/style.css'>
+    <script src='/javascripts/handlebars.min.js'></script>
+
+    {{#if embedPartial}}
+      {{#with embedPartial}}
+        <script id="partial-{{partialName}}" type="text/x-handlebars-template">
+          {{{partialBody}}}
+        </script>
+      {{/with}}
+    {{/if}}
+
+    <script>
+      function getPartial(partialName) {
+        return Handlebars.compile($(`#partial-${partialName}`).html());
+      }
+
+      $(document).ready(function() {
+        let partialIngredientFields = getPartial('ingredientFields');
+
+        let numIngredientFields = $('#recipeForm .ingredient-section').length;
+
+        let ingredientIndex = numIngredientFields;
+
+        $('#recipeForm #addIngredient').on('click', function(event) {
+          event.preventDefault();
+
+          $('#recipeForm .recipe-ingredients').append(partialIngredientFields({ index: ingredientIndex }));
+          ingredientIndex += 1;
+        });
+
+        $('#recipeForm').on('click', '.removeIngredient', function(event) {
+          event.preventDefault();
+
+          console.log('Clicked remove');
+          console.log('section:', $(this).closest('.ingredient-section'));
+
+          $(this).closest('.ingredient-section').remove();
+        });
+      });
+    </script>
   </head>
   <body>
     {{{body}}}

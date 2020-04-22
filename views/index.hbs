@@ -1,2 +1,17 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
+
+<form id="recipeForm" method="POST" action="/recipes">
+  <div>
+    <input type="text" name="recipe[name]">
+  </div>
+  <div>
+    <button type="button" id="addIngredient">Add Ingredient</button>
+  </div>
+  <div class="recipe-ingredients">
+    {{> ingredientFields index=0}}
+  </div>
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
